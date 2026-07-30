@@ -1,9 +1,6 @@
 import dotenv from "dotenv"
 dotenv.config();
 
-if (!process.env.CLIENT_URL) {
-  throw new Error("CLIENT_URL environment variable is missing.");
-}
 if (!process.env.PORT) {
   throw new Error("PORT environment variable is missing.");
 }
