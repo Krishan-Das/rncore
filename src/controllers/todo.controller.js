@@ -124,7 +124,6 @@ export async function deleteTodo(req, res){
     return res.status(200).json({
       success: true,
       message: "Todo deleted successfully",
-      data: todo
     })
   } catch (error) {
     console.error(error);

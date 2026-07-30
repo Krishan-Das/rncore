@@ -83,7 +83,7 @@ POST /todos
    |
 RNCore API
    |
-Save todo in MongoDB
+Save todo in Database
    |
 Return created todo
 ```
@@ -92,29 +92,25 @@ Return created todo
 
 # Base URL
 
-For local development:
-
 ```
-http://localhost:5000/api/v1
+https://rncore.onrender.com/api/v1
 ```
 
 Example API URL:
 
 ```
-http://localhost:5000/api/v1/todos
+https://rncore.onrender.com/api/v1/todos
 ```
 
 Understanding:
 
 ```
-localhost:5000 → Backend server
+rncore.onrender.com → Backend server
 
 /api/v1 → API version
 
 /todos → Todo resource
 ```
-
-Replace the URL with your deployed backend URL when using the online version.
 
 ---
 
@@ -216,7 +212,7 @@ Response:
   "success": true,
   "message": "Todo created successfully",
   "data": {
-    "id": "6890xxxx",
+    "_id": "6890xxxx",
     "title": "Learn React API Integration",
     "isCompleted": false,
     "createdAt": "2026-07-30T08:15:42.123Z",
@@ -280,12 +276,16 @@ Response:
     {
       "_id": "6890xxxx",
       "title": "Learn React",
-      "isCompleted": false
+      "isCompleted": false,
+      "createdAt": "2026-07-30T08:15:42.123Z",
+      "updatedAt": "2026-07-30T08:15:42.123Z"
     },
     {
       "_id": "6890yyyy",
       "title": "Build Todo App",
-      "isCompleted": true
+      "isCompleted": true,
+      "createdAt": "2026-07-30T09:20:10.456Z",
+      "updatedAt": "2026-07-30T10:05:30.789Z"
     }
   ]
 }
@@ -343,7 +343,9 @@ Only update status:
   "data": {
     "_id": "6890xxxx",
     "title": "Learn Express",
-    "isCompleted": true
+    "isCompleted": true,
+    "createdAt": "2026-07-30T08:15:42.123Z",
+    "updatedAt": "2026-07-30T10:25:30.456Z"
   }
 }
 ```
@@ -395,7 +397,7 @@ DELETE /todos/6890xxxx
 
 ```javascript
 const response = await fetch(
-  "http://localhost:5000/api/v1/todos"
+  "https://rncore.onrender.com/api/v1/todos"
 );
 
 const result = await response.json();
@@ -414,7 +416,6 @@ You can test RNCore using:
 
 Steps:
 
-1. Start the backend server
 2. Send API requests
 3. Check JSON responses
 4. Connect your frontend application
@@ -446,10 +447,10 @@ RNCore
 Using RNCore, you can create:
 
 - Todo Application
-- Task Manager
-- Daily Planner
-- Habit Tracker
-- Notes Application
+- Simple Task Manager
+- Checklist Application
+- Daily Task Tracker
+- Learning Progress Tracker
 
 ---
 
@@ -476,3 +477,5 @@ Possible future features:
 ---
 
 # Happy Coding! 🚀
+
+© 2026 RNCore. Built by **Kryon Labs**.
