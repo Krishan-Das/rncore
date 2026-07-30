@@ -105,7 +105,7 @@ https://rncore.onrender.com/api/v1/todos
 Understanding:
 
 ```
-rncore.onrender.com → Backend server
+https://rncore.onrender.com → Backend server
 
 /api/v1 → API version
 
@@ -416,7 +416,8 @@ You can test RNCore using:
 
 Steps:
 
-2. Send API requests
+1. Choose an API client (Postman / Thunder Client)
+2. Send requests using the RNCore API URL
 3. Check JSON responses
 4. Connect your frontend application
 
