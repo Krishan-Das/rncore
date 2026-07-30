@@ -20,7 +20,7 @@ export async function createTodo(req, res){
       success: true,
       message: "Todo created successfully",
       data:{
-        id: todo._id,
+        _id: todo._id,
         title: todo.title,
         isCompleted: todo.isCompleted,
         createdAt: todo.createdAt,
