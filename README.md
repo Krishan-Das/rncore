@@ -90,6 +90,24 @@ Return created todo
 
 ---
 
+# 📚 API Versions
+
+RNCore provides two API versions for different learning levels.
+
+## V1 - Public API
+
+V1 is designed for beginners who are learning API integration.
+
+Features:
+
+- No account required
+- Public todo data
+- Simple CRUD operations
+- Easy frontend integration
+
+
+---
+
 # Base URL
 
 ```
@@ -111,6 +129,24 @@ https://rncore.onrender.com → Backend server
 
 /todos → Todo resource
 ```
+
+---
+
+## V2 - Private API
+
+V2 provides a more realistic backend experience.
+
+Features:
+
+- User accounts
+- Personal API URL
+- Private user data
+- Real database storage
+- Secure API access
+
+To use V2, users need to create an account through the RNCore platform.
+
+
 
 ---
 
