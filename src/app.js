@@ -6,9 +6,7 @@ const app = express();
 
 // --- Middlewares ---
 app.use(express.json());
-app.use(cors({
-  origin: config.CLIENT_URL
-}))
+app.use(cors())
 
 
 // Todo API routes
