@@ -1,81 +1,65 @@
 import { Link } from "react-router-dom";
-import { Github } from "lucide-react";
+import { RiGithubFill } from "react-icons/ri";
 
 const Footer = () => {
   return (
-    <footer className="mt-24 border-t border-zinc-200 dark:border-zinc-800">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
+    <footer className="border-t border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-12">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row">
-          {/* Brand */}
+          
+          {/* Brand Info */}
           <div className="max-w-sm">
-            <Link
-              to="/"
-              className="text-sm font-semibold tracking-tight"
-            >
-              RNCore
+            <Link to="/" className="flex items-center gap-2">
+              <div className="flex h-6 w-6 items-center justify-center rounded bg-indigo-600 font-mono text-xs font-bold text-white">
+                <img className="h-full w-full object-cover" src="/RNCore.svg" alt="RN" />
+              </div>
+              <span className="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
+                RNCore
+              </span>
             </Link>
 
-            <p className="mt-3 text-xs leading-6 text-zinc-500 dark:text-zinc-400">
+            <p className="mt-3 text-xs leading-5 text-slate-500 dark:text-zinc-400">
               A beginner-friendly REST API platform built for learning frontend
-              and backend integration with real database support.
+              and backend integration with real cloud database support.
             </p>
           </div>
 
-          {/* Links */}
+          {/* Links Section */}
           <div className="grid grid-cols-2 gap-10 text-xs sm:grid-cols-3">
             <div className="space-y-3">
-              <h3 className="font-medium text-zinc-900 dark:text-zinc-100">
+              <h3 className="font-semibold text-slate-900 dark:text-zinc-100">
                 Product
               </h3>
-
-              <div className="flex flex-col gap-2 text-zinc-500 dark:text-zinc-400">
-                <Link to="/docs" className="hover:text-black dark:hover:text-white">
-                  Documentation
-                </Link>
-
-                <Link to="/dashboard" className="hover:text-black dark:hover:text-white">
-                  Dashboard
-                </Link>
-
-                <Link to="/api" className="hover:text-black dark:hover:text-white">
-                  API
-                </Link>
+              <div className="flex flex-col gap-2 text-slate-500 dark:text-zinc-400">
+                <Link to="/docs" className="hover:text-indigo-600 dark:hover:text-white transition">Documentation</Link>
+                <Link to="/dashboard" className="hover:text-indigo-600 dark:hover:text-white transition">Dashboard</Link>
+                <Link to="/api" className="hover:text-indigo-600 dark:hover:text-white transition">API Keys</Link>
               </div>
             </div>
 
             <div className="space-y-3">
-              <h3 className="font-medium text-zinc-900 dark:text-zinc-100">
+              <h3 className="font-semibold text-slate-900 dark:text-zinc-100">
                 Resources
               </h3>
-
-              <div className="flex flex-col gap-2 text-zinc-500 dark:text-zinc-400">
-                <Link to="/privacy" className="hover:text-black dark:hover:text-white">
-                  Privacy
-                </Link>
-
-                <Link to="/terms" className="hover:text-black dark:hover:text-white">
-                  Terms
-                </Link>
-
-                <Link to="/status" className="hover:text-black dark:hover:text-white">
-                  Status
-                </Link>
+              <div className="flex flex-col gap-2 text-slate-500 dark:text-zinc-400">
+                <Link to="/privacy" className="hover:text-indigo-600 dark:hover:text-white transition">Privacy Policy</Link>
+                <Link to="/terms" className="hover:text-indigo-600 dark:hover:text-white transition">Terms of Service</Link>
+                <Link to="/status" className="hover:text-indigo-600 dark:hover:text-white transition">System Status</Link>
               </div>
             </div>
 
             <div className="space-y-3">
-              <h3 className="font-medium text-zinc-900 dark:text-zinc-100">
-                Community
+              <h3 className="font-semibold text-slate-900 dark:text-zinc-100">
+                Developer
               </h3>
-
-              <div className="flex flex-col gap-2 text-zinc-500 dark:text-zinc-400">
+              <div className="flex flex-col gap-2 text-slate-500 dark:text-zinc-400">
                 <a
                   href="https://github.com/Krishan-Das"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-2 hover:text-black dark:hover:text-white"
+                  className="flex items-center gap-1.5 hover:text-indigo-600 dark:hover:text-white transition"
                 >
-                  <Github size={14} />
+                  <RiGithubFill />
                   GitHub
                 </a>
               </div>
@@ -83,11 +67,10 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-zinc-200 pt-6 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400 sm:flex-row">
-          <p>© 2026 RNCore. All rights reserved.</p>
-
-          <p>Built for students & frontend developers.</p>
+        {/* Bottom Credits */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-400 dark:border-zinc-800/80 dark:text-zinc-500 sm:flex-row">
+          <p>© {new Date().getFullYear()} RNCore. All rights reserved.</p>
+          <p>Designed for students & frontend developers.</p>
         </div>
       </div>
     </footer>
