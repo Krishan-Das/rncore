@@ -1,6 +1,7 @@
 import express from "express";
 import config from "./config/config.js";
-import cors from "cors"
+import cors from "cors";
+import cookieParser from "cookie-parser"
 
 import todoRouter from "./routes/v1/todo.routes.js";
 import v2AuthRoutes from "./routes/v2/auth.routes.js"
@@ -10,7 +11,11 @@ const app = express();
 
 // --- Middlewares ---
 app.use(express.json());
-app.use(cors())
+app.use(cookieParser());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}))
 
 
 // Todo API routes
