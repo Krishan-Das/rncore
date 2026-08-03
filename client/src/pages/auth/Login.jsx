@@ -1,14 +1,22 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, replace, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff, FiArrowRight, FiCode, FiZap, FiShield } from "react-icons/fi";
-import {login} from "../../features/auth/authService.js"
+import { login } from "../../features/auth/authService.js";
+import Loader from "../../components/Loader/Loader.jsx";
+
+import { useDispatch } from "react-redux";
+import { setUser } from "../../features/auth/authSlice.js";
+import { setApiData } from "../../features/api/apiSlice.js";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +25,7 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -26,16 +34,30 @@ const Login = () => {
       return;
     }
 
-    const response = await login(formData);
-    console.log(response);
-    
+    try {
+      setLoading(true);
 
-    setLoading(true);
+      const response = await login(formData);
+      dispatch(setUser(response.data.user));      
+      dispatch(
+        setApiData({
+          key: response.data.api.key,
+          url: response.data.api.url
+        })
+      );
+      navigate('/dashboard', replace)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
   };
 
   return (
     <div className="relative flex min-h-[calc(100vh-4rem)] w-full overflow-hidden bg-slate-50 dark:bg-zinc-950">
-      
+
+      {loading && <Loader />}
+
       {/* 🌌 Background Grid Lines & Glow */}
       <div className="absolute inset-0 z-0 opacity-40 dark:opacity-20 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]"></div>
@@ -45,11 +67,11 @@ const Login = () => {
 
       {/* Main Content Container */}
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col lg:flex-row">
-        
+
         {/* 👈 Left Side: Features & Live Code Preview */}
         <div className="flex flex-1 flex-col justify-between p-8 lg:p-12 hidden md:flex">
           <div>
-            
+
 
             <div className="mt-12 space-y-4">
               <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white lg:text-4xl">
@@ -103,7 +125,7 @@ const Login = () => {
         {/* 👉 Right Side: Login Form Area */}
         <div className="flex flex-1 items-center justify-center p-6 lg:p-12">
           <div className="w-full max-w-md space-y-6">
-            
+
             <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-8 shadow-sm backdrop-blur-sm dark:border-zinc-800/80 dark:bg-zinc-900/90">
               <div className="text-center">
                 <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -122,7 +144,7 @@ const Login = () => {
               )}
 
               <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-                
+
                 {/* Email Address */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300">

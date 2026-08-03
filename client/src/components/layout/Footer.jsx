@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="border-t border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-12">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row">
-          
+
           {/* Brand Info */}
           <div className="max-w-sm">
             <Link to="/" className="flex items-center gap-2">
@@ -31,9 +31,11 @@ const Footer = () => {
                 Product
               </h3>
               <div className="flex flex-col gap-2 text-slate-500 dark:text-zinc-400">
-                <Link to="/docs" className="hover:text-indigo-600 dark:hover:text-white transition">Documentation</Link>
+                <a className="hover:text-indigo-600 dark:hover:text-white transition" href="/#overview">
+                  Documentation
+                </a>
                 <Link to="/dashboard" className="hover:text-indigo-600 dark:hover:text-white transition">Dashboard</Link>
-                <Link to="/api" className="hover:text-indigo-600 dark:hover:text-white transition">API Keys</Link>
+                <Link to="/dashboard" className="hover:text-indigo-600 dark:hover:text-white transition">API Keys</Link>
               </div>
             </div>
 
@@ -42,7 +44,7 @@ const Footer = () => {
                 Resources
               </h3>
               <div className="flex flex-col gap-2 text-slate-500 dark:text-zinc-400">
-                <Link to="/privacy" className="hover:text-indigo-600 dark:hover:text-white transition">Privacy Policy</Link>
+                <Link to="/privacy-policy" className="hover:text-indigo-600 dark:hover:text-white transition">Privacy Policy</Link>
                 <Link to="/terms" className="hover:text-indigo-600 dark:hover:text-white transition">Terms of Service</Link>
                 <Link to="/status" className="hover:text-indigo-600 dark:hover:text-white transition">System Status</Link>
               </div>

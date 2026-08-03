@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BookOpen,
   Code2,
@@ -68,6 +68,19 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())`
   };
+
+  useEffect(() => {
+  if (window.location.hash) {
+    setTimeout(() => {
+      const id = window.location.hash.replace("#", "");
+      const section = document.getElementById(id);
+
+      section?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }, 500);
+  }
+}, []);
 
   return (
     <div className="mx-auto max-w-7xl">
