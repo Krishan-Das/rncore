@@ -13,6 +13,9 @@ if (!process.env.JWT_SECRET) {
 if (!process.env.NODE_ENV) {
   throw new Error("NODE_ENV environment variable is missing.");
 }
+if (!process.env.CLIENT_URL) {
+  throw new Error("CLIENT_URL environment variable is missing.");
+}
 
 const config = {
   CLIENT_URL: process.env.CLIENT_URL,

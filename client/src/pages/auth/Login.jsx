@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff, FiArrowRight, FiCode, FiZap, FiShield } from "react-icons/fi";
+import {login} from "../../features/auth/authService.js"
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     setError("");
 
@@ -25,13 +26,11 @@ const Login = () => {
       return;
     }
 
-    setLoading(true);
+    const response = await login(formData);
+    console.log(response);
+    
 
-    // Simulate Login API Call
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/dashboard");
-    }, 1000);
+    setLoading(true);
   };
 
   return (
@@ -153,6 +152,7 @@ const Login = () => {
                       Forgot password?
                     </Link>
                   </div>
+
                   <div className="relative mt-1.5">
                     <input
                       type={showPassword ? "text" : "password"}
@@ -163,10 +163,11 @@ const Login = () => {
                       onChange={handleChange}
                       className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 transition focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder-zinc-500"
                     />
+
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300 cursor-pointer"
                     >
                       {showPassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
                     </button>
@@ -177,7 +178,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 disabled:opacity-50"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 disabled:opacity-50 cursor-pointer"
                 >
                   {loading ? "Signing in..." : "Sign In"}
                   {!loading && <FiArrowRight size={14} />}
