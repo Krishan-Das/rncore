@@ -8,6 +8,27 @@ This project is designed for students and beginner developers who want to unders
 
 ---
 
+## 📸 App Preview
+
+<p align="center">
+  <img src="screenshots/Home.png" alt="Home Light" width="48%" />
+  <img src="screenshots/Home_dark.png" alt="Home Dark" width="48%" />
+</p>
+<p align="center">
+  <sub><b>Home Dashboard</b> (Light & Dark Mode)</sub>
+</p>
+
+<br/>
+
+<p align="center">
+  <img src="screenshots/API.png" alt="API Playground" width="98%" />
+</p>
+<p align="center">
+  <sub><b>API Documentation & Endpoint Explorer</b></sub>
+</p>
+
+---
+
 # ✨ Features
 
 - Beginner-friendly REST API
