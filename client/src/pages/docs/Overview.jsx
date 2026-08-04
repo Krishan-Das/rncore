@@ -12,7 +12,7 @@ import {
 
 const Overview = () => {
   return (
-    <section id="overview" className="max-w-4xl scroll-mt-24 font-sans text-slate-800 dark:text-zinc-100">
+    <section id="overview" className="w-full scroll-mt-24 font-sans text-slate-800 dark:text-zinc-100">
 
       {/* 1. Header & Introduction */}
       <div>

@@ -70,54 +70,55 @@ print(response.json())`
   };
 
   useEffect(() => {
-  if (window.location.hash) {
-    setTimeout(() => {
-      const id = window.location.hash.replace("#", "");
-      const section = document.getElementById(id);
+    if (window.location.hash) {
+      setTimeout(() => {
+        const id = window.location.hash.replace("#", "");
+        const section = document.getElementById(id);
 
-      section?.scrollIntoView({
-        behavior: "smooth",
-      });
-    }, 500);
-  }
-}, []);
+        section?.scrollIntoView({
+          behavior: "smooth",
+        });
+      }, 500);
+    }
+  }, []);
 
   return (
     <div className="mx-auto max-w-7xl">
-      <div className="flex">
+      {/* 1. flex-col (মোবাইলের জন্য) এবং md:flex-row (বড় স্ক্রিনের জন্য) */}
+      <div className="flex flex-col md:flex-row">
 
         {/* Sticky Left Sidebar */}
-        <DocsSidebar/>
+        <DocsSidebar />
 
-        {/* Main Documentation Body */}
-        <main className="flex-1 px-6 py-10 lg:px-12 max-w-4xl">
+        {/* 2. min-w-0 যুক্ত করা হয়েছে যাতে Code Block ওভারফ্লো না করে */}
+        <main className="flex-1 min-w-0 px-4 py-8 sm:px-6 lg:px-12 max-w-4xl">
 
-          {/* Section 1: Overview */}
-          <Overview/>
+          {/* Section Components */}
+          <Overview />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
-          
-          <QuickStart/>
+
+          <QuickStart />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
-          
-          <ApiKeyAuth/>
+
+          <ApiKeyAuth />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
-          
-          <V1PublicApi/>
+
+          <V1PublicApi />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
-          
-          <V2PersonalApi/>
+
+          <V2PersonalApi />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
-          
-          <ResponseFormat/>
+
+          <ResponseFormat />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
-          
-          <ErrorHandling/>
+
+          <ErrorHandling />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
-          
-          <ExamplesSection/>
+
+          <ExamplesSection />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
-        
-          <ArchitectureSection/>
+
+          <ArchitectureSection />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
 
         </main>
