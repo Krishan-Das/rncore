@@ -65,7 +65,6 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      setLoading(true);
       setLoggingOut(true);
       setIsDropdownOpen(false);
       
@@ -85,7 +84,6 @@ const Navbar = () => {
       toast.error(errorMessage);
     } finally {
       setLoggingOut(false);
-      setLoading(false);
     }
   };
 
