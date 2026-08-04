@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, LinkIcon, Key, BookOpen, Settings } from 'lucide-react';
+import { LayoutDashboard, LinkIcon, Key, BookOpen, Settings, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const DevSidebar = ({ activeSection = 'overview', onSelect }) => {
@@ -42,7 +42,7 @@ const DevSidebar = ({ activeSection = 'overview', onSelect }) => {
         onClick={onSelect}
         className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-300 dark:hover:bg-zinc-800/60 dark:hover:text-white mb-2"
       >
-        <LinkIcon className="w-4 h-4 text-slate-400 dark:text-zinc-500" />
+        <Home className="w-4 h-4 text-slate-400 dark:text-zinc-500" />
         <span>Go to Home</span>
       </Link>
 

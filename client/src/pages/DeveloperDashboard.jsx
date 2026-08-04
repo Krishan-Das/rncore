@@ -10,7 +10,7 @@ import Loader from '../components/Loader/Loader.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 
 import DevAPIKeys from "./developerDashboard/DevAPIKeys.jsx";
-import DevSidebar from '../components/docs/DevSidebar.jsx';
+import DevSidebar from '../components/DevSidebar.jsx';
 
 import { logout as logoutAction } from "../features/auth/authSlice.js";
 import { logout as logoutApi } from "../features/auth/authService.js";

@@ -10,21 +10,23 @@ This project is designed for students and beginner developers who want to unders
 
 ## 📸 App Preview
 
+<!-- Home Dashboard Light & Dark -->
 <p align="center">
-  <img src="screenshots/Home.png" alt="Home Light" width="48%" />
-  <img src="screenshots/Home_dark.png" alt="Home Dark" width="48%" />
+  <img src="screenshots/Home.png" alt="Home Light" width="48%" style="border-radius: 10px; border: 1px solid #30363d;" />
+  <img src="screenshots/Home_dark.png" alt="Home Dark" width="48%" style="border-radius: 10px; border: 1px solid #30363d;" />
 </p>
 <p align="center">
-  <sub><b>Home Dashboard</b> (Light & Dark Mode)</sub>
+  <sub>⚡ <b>Home Dashboard</b> — Light & Dark Theme Support</sub>
 </p>
 
 <br/>
 
+<!-- API Explorer -->
 <p align="center">
-  <img src="screenshots/API.png" alt="API Playground" width="98%" />
+  <img src="screenshots/API.png" alt="API Playground" width="98%" style="border-radius: 10px; border: 1px solid #30363d;" />
 </p>
 <p align="center">
-  <sub><b>API Documentation & Endpoint Explorer</b></sub>
+  <sub>🚀 <b>API Documentation | Developer Dashboard</b></sub>
 </p>
 
 ---
