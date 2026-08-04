@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import {
   Sun, Moon, LogOut, Key, Home, ChevronDown
 } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from "../components/Loader/CircularProgress.jsx";
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../features/auth/authService.js';
@@ -12,6 +12,11 @@ import { useTheme } from '../context/ThemeContext.jsx';
 import DevAPIKeys from "./developerDashboard/DevAPIKeys.jsx";
 import DevSidebar from '../components/docs/DevSidebar.jsx';
 
+import { logout as logoutAction } from "../features/auth/authSlice.js";
+import { logout as logoutApi } from "../features/auth/authService.js";
+import {clearApiData} from "../features/api/apiSlice.js"
+import toast from "react-hot-toast";
+
 export default function DeveloperDashboard() {
   const [loading, setLoading] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -19,15 +24,30 @@ export default function DeveloperDashboard() {
 
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
   const user = useSelector((state) => state.auth.user);
 
   const logoutHandler = async () => {
     try {
       setLoading(true);
-      await logout();
-      navigate("/");
+
+      // 1. Backend Logout API Call
+      const res = await logoutApi();
+
+      // 2. Redux State Reset (authSlice)
+      dispatch(logoutAction());
+      dispatch(clearApiData());
+
+      toast.success(res?.data?.message || "Logged out successfully!");
+      navigate("/", { replace: true });
+
     } catch (error) {
-      console.error(error);
+      console.error("Logout failed:", error);
+
+      const errorMessage =
+        error.response?.data?.message || "Logout failed. Please try again.";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -73,7 +93,7 @@ export default function DeveloperDashboard() {
 
       {/* Top Navbar */}
       <header className="sticky top-0 z-40 h-16 border-b px-4 sm:px-6 flex items-center justify-between transition-colors bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-slate-200 dark:border-zinc-800">
-        
+
         {/* Left Side: Brand Logo & Status Badge */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2 group">
@@ -119,7 +139,7 @@ export default function DeveloperDashboard() {
           {/* Responsive Dropdown Menu */}
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-60 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 shadow-xl py-2 z-50 transition-all animate-in fade-in slide-in-from-top-2 duration-150">
-              
+
               {/* User Details Section */}
               <div className="px-4 py-2.5 border-b border-slate-100 dark:border-zinc-800/80">
                 <p className="text-xs font-semibold text-slate-900 dark:text-white truncate">
@@ -203,7 +223,7 @@ export default function DeveloperDashboard() {
 
         {/* Main Dashboard Content */}
         <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-6xl w-full mx-auto space-y-6 sm:space-y-8 overflow-x-hidden">
-          
+
           <section id="api-keys">
             <DevAPIKeys />
           </section>

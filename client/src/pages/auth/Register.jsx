@@ -1,9 +1,18 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff, FiArrowRight, FiCode, FiZap, FiShield } from "react-icons/fi";
+import toast from "react-hot-toast";
+import { register } from "../../features/auth/authService.js";
+
+import { setUser } from "../../features/auth/authSlice.js";
+import { setApiData } from "../../features/api/apiSlice.js";
+import Loader from "../../components/Loader/Loader.jsx";
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -17,31 +26,69 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     if (!formData.fullName || !formData.email || !formData.password) {
-      setError("Please fill in all fields.");
+      const errorMsg = "Please fill in all fields.";
+      setError(errorMsg);
+      toast.error(errorMsg);
       return;
     }
 
     if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters long.");
+      const errorMsg = "Password must be at least 6 characters long.";
+      setError(errorMsg);
+      toast.error(errorMsg);
       return;
     }
 
     setLoading(true);
 
-    setTimeout(() => {
+    try {
+      const payload = {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const res = await register(payload);
+
+      if (res.data?.success) {
+        if (res.data.user) {
+          dispatch(setUser(res.data.user));
+        }
+
+        if (res.data.api) {
+          dispatch(
+            setApiData({
+              key: res.data.api.key,
+              url: res.data.api.url,
+            })
+          );
+        }
+
+        // 3. Success Toast & Redirect
+        toast.success(res.data.message || "Account created successfully!");
+        navigate("/dashboard", { replace: true });
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.message || "Registration failed. Please try again.";
+
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
       setLoading(false);
-      navigate("/dashboard");
-    }, 1000);
+    }
   };
 
   return (
     <div className="relative flex min-h-[calc(100vh-4rem)] w-full overflow-hidden bg-slate-50 dark:bg-zinc-950">
-      
+      {
+        loading && <Loader/>
+      }
       {/* 🌌 Background Grid Lines & Glow */}
       <div className="absolute inset-0 z-0 opacity-40 dark:opacity-20 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]"></div>
@@ -51,14 +98,14 @@ const Register = () => {
 
       {/* Main Content Container */}
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col lg:flex-row">
-        
-        {/* 👈 Left Side: Features & Live Code Preview */}
         <div className="flex flex-1 flex-col justify-between p-8 lg:p-12 hidden md:flex">
           <div>
             <div className="mt-6 space-y-4">
               <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white lg:text-4xl">
                 Build frontend apps <br />
-                <span className="text-indigo-600 dark:text-indigo-400">without worrying about backend.</span>
+                <span className="text-indigo-600 dark:text-indigo-400">
+                  without worrying about backend.
+                </span>
               </h1>
               <p className="text-sm text-slate-600 dark:text-zinc-400 max-w-md">
                 Get instant isolated REST API endpoints, real-time mock data, and full CRUD capabilities for your React/Next.js projects.
@@ -104,10 +151,9 @@ const Register = () => {
           </div>
         </div>
 
-        {/* 👉 Right Side: Form Area (Without Social Logins) */}
+        {/* Right Side: Form Area */}
         <div className="flex flex-1 items-center justify-center p-6 lg:p-12">
           <div className="w-full max-w-md space-y-6">
-            
             <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-8 shadow-sm backdrop-blur-sm dark:border-zinc-800/80 dark:bg-zinc-900/90">
               <div className="text-center">
                 <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -118,7 +164,7 @@ const Register = () => {
                 </p>
               </div>
 
-              {/* Error Message */}
+              {/* Error Message Inline Display */}
               {error && (
                 <div className="mt-4 rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 dark:border-rose-900/30 dark:bg-rose-950/30 dark:text-rose-400">
                   {error}
@@ -126,7 +172,6 @@ const Register = () => {
               )}
 
               <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-                
                 {/* Full Name */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300">
@@ -177,7 +222,7 @@ const Register = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300 cursor-pointer"
                     >
                       {showPassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
                     </button>
@@ -188,7 +233,7 @@ const Register = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 disabled:opacity-50"
+                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 disabled:opacity-50"
                 >
                   {loading ? "Creating account..." : "Get Started Free"}
                   {!loading && <FiArrowRight size={14} />}
@@ -202,14 +247,10 @@ const Register = () => {
                   Sign in
                 </Link>
               </p>
-
             </div>
-
           </div>
         </div>
-
       </div>
-
     </div>
   );
 };

@@ -1,22 +1,26 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { 
-  RiGithubFill, 
-  RiArrowDownSLine, 
-  RiMenu3Line, 
-  RiCloseLine, 
+import {
+  RiGithubFill,
+  RiArrowDownSLine,
+  RiMenu3Line,
+  RiCloseLine,
   RiLayoutGridLine,
   RiBookOpenLine,
   RiCodeSSlashLine,
   RiLogoutBoxRLine
 } from "react-icons/ri";
 import ThemeToggle from "../common/ThemeToggle";
-import { useSelector } from "react-redux";
-import { logout } from "../../features/auth/authService.js";
+import { useDispatch, useSelector } from "react-redux";
+
+import { logout as logoutAction } from "../../features/auth/authSlice.js";
+import { clearApiData } from "../../features/api/apiSlice.js";
+import { logout as logoutApi } from "../../features/auth/authService.js";
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.user);
 
   // States
@@ -61,14 +65,27 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
+      setLoading(true);
       setLoggingOut(true);
       setIsDropdownOpen(false);
-      await logout();
-      navigate("/");
+      
+
+      const res = await logoutApi();
+      dispatch(logoutAction())
+      dispatch(clearApiData())
+
+      toast.success(res?.data?.message || "Logged out successfully!");
+      navigate("/", { replace: true });
+
     } catch (error) {
       console.error("Logout failed:", error);
+
+      const errorMessage =
+        error.response?.data?.message || "Logout failed. Please try again.";
+      toast.error(errorMessage);
     } finally {
       setLoggingOut(false);
+      setLoading(false);
     }
   };
 
@@ -81,7 +98,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/90">
       <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        
+
         {/* Brand Logo */}
         <div className="flex items-center gap-3">
           <Link to="/" className="group flex items-center gap-2">
@@ -118,7 +135,7 @@ const Navbar = () => {
 
         {/* Right Action Buttons */}
         <div className="flex items-center gap-2">
-          
+
           {/* AUTH SECTION */}
           {!user ? (
             <>
@@ -163,9 +180,8 @@ const Navbar = () => {
                   {getInitial()}
                 </div>
                 <RiArrowDownSLine
-                  className={`text-base text-slate-600 transition-transform duration-200 dark:text-zinc-400 ${
-                    isDropdownOpen ? "rotate-180" : ""
-                  }`}
+                  className={`text-base text-slate-600 transition-transform duration-200 dark:text-zinc-400 ${isDropdownOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, replace, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff, FiArrowRight, FiCode, FiZap, FiShield } from "react-icons/fi";
 import { login } from "../../features/auth/authService.js";
@@ -25,12 +26,16 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     if (!formData.email || !formData.password) {
-      setError("Please fill in all fields.");
+      const errorMsg = "Please fill in all fields.";
+      setError(errorMsg);
+      toast.error(errorMsg);
       return;
     }
 
@@ -38,18 +43,27 @@ const Login = () => {
       setLoading(true);
 
       const response = await login(formData);
-      dispatch(setUser(response.data.user));      
+
+      dispatch(setUser(response.data.user));
       dispatch(
         setApiData({
           key: response.data.api.key,
           url: response.data.api.url
         })
       );
-      navigate('/dashboard', replace)
+
+      toast.success(response.data.message || "Login successful!");
+
+      navigate('/dashboard', { replace: true });
+
     } catch (error) {
-      console.error(error)
+      console.error(error);
+
+      const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 

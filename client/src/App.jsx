@@ -7,8 +7,9 @@ import { getMe } from "./features/auth/authService.js";
 import { setUser } from "./features/auth/authSlice.js";
 import { setApiData } from "./features/api/apiSlice.js";
 
-function App() {
+import { Toaster } from "react-hot-toast";
 
+function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,10 +20,9 @@ function App() {
         dispatch(
           setApiData({
             key: response.data.api.key,
-            url: response.data.api.url
+            url: response.data.api.url,
           })
         );
-
       } catch (error) {
         console.log("Not logged in");
       }
@@ -31,8 +31,24 @@ function App() {
     fetchUser();
   }, [dispatch]);
 
-
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Toaster
+        position="top-center"
+        containerStyle={{
+          top: 50,
+        }}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            maxWidth: "100%",
+            margin: "0 auto",
+          },
+        }}
+      />
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;
