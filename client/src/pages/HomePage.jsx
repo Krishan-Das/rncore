@@ -1,22 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  BookOpen,
-  Code2,
-  Database,
-  Key,
-  Layers,
-  ChevronRight,
-  Copy,
-  Check,
-  ShieldCheck,
-  Zap,
-  Search,
-  Server,
-  Globe,
-  Terminal,
-  Rocket,
-  KeyRound
-} from "lucide-react";
 import Overview from "./docs/Overview";
 import QuickStart from "./docs/QuickStart";
 import DocsSidebar from "../components/docs/DocsSidebar";
@@ -38,37 +20,6 @@ const HomePage = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const snippets = {
-    javascript: `import axios from "axios";
-
-const client = axios.create({
-  baseURL: "https://api.rncore.dev/v2",
-  headers: {
-    Authorization: "Bearer rn_live_94820a8d712f",
-    "Content-Type": "application/json"
-  }
-});
-
-// Fetch all todo resources
-const { data } = await client.get("/todos");
-console.log(data);`,
-
-    curl: `curl -X GET "https://api.rncore.dev/v2/todos" \\
-  -H "Authorization: Bearer rn_live_94820a8d712f" \\
-  -H "Content-Type: application/json"`,
-
-    python: `import requests
-
-url = "https://api.rncore.dev/v2/todos"
-headers = {
-    "Authorization": "Bearer rn_live_94820a8d712f",
-    "Content-Type": "application/json"
-}
-
-response = requests.get(url, headers=headers)
-print(response.json())`
-  };
-
   useEffect(() => {
     if (window.location.hash) {
       setTimeout(() => {
@@ -84,16 +35,14 @@ print(response.json())`
 
   return (
     <div className="mx-auto max-w-7xl">
-      {/* 1. flex-col (মোবাইলের জন্য) এবং md:flex-row (বড় স্ক্রিনের জন্য) */}
       <div className="flex flex-col md:flex-row">
 
-        {/* Sticky Left Sidebar */}
+        {/* Left Sidebar */}
         <DocsSidebar />
 
-        {/* 2. min-w-0 যুক্ত করা হয়েছে যাতে Code Block ওভারফ্লো না করে */}
+        {/* Main Content Area */}
         <main className="flex-1 min-w-0 px-4 py-8 sm:px-6 lg:px-12 max-w-4xl">
 
-          {/* Section Components */}
           <Overview />
           <hr className="my-10 border-slate-200 dark:border-zinc-800" />
 
