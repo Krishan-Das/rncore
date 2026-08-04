@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
-  Sun, Moon, LogOut, Key, User as UserIcon, Home, ChevronDown
+  Sun, Moon, LogOut, Key, Home, ChevronDown
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import CircularProgress from "../components/Loader/CircularProgress.jsx";
@@ -98,10 +98,10 @@ export default function DeveloperDashboard() {
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 p-1.5 rounded-xl border border-slate-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-100 dark:hover:bg-zinc-800/80 transition cursor-pointer shadow-2xs"
+            className="flex items-center gap-2 p-1.5 rounded-full border border-slate-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-100 dark:hover:bg-zinc-800/80 transition cursor-pointer shadow-2xs"
             aria-label="User Menu"
           >
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-indigo-600 text-white shrink-0 shadow-xs">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold bg-indigo-600 text-white shrink-0 shadow-xs">
               {user ? (
                 <span>{user.email.charAt(0).toUpperCase()}</span>
               ) : (
@@ -116,12 +116,12 @@ export default function DeveloperDashboard() {
             <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
-          {/* Combined Avatar Dropdown Menu */}
+          {/* Responsive Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 shadow-xl py-2 z-50 transition-all animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="absolute right-0 mt-2 w-60 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 shadow-xl py-2 z-50 transition-all animate-in fade-in slide-in-from-top-2 duration-150">
               
               {/* User Details Section */}
-              <div className="px-4 py-3 border-b border-slate-100 dark:border-zinc-800/80">
+              <div className="px-4 py-2.5 border-b border-slate-100 dark:border-zinc-800/80">
                 <p className="text-xs font-semibold text-slate-900 dark:text-white truncate">
                   {user?.name || "Developer Account"}
                 </p>
@@ -130,8 +130,8 @@ export default function DeveloperDashboard() {
                 </p>
               </div>
 
-              {/* Navigation Actions */}
-              <div className="p-1 space-y-0.5">
+              {/* Navigation Links - ONLY Mobile Screen (md:hidden) */}
+              <div className="p-1 border-b border-slate-100 dark:border-zinc-800/80 md:hidden space-y-0.5">
                 <Link
                   to="/"
                   onClick={() => setIsDropdownOpen(false)}
@@ -149,8 +149,10 @@ export default function DeveloperDashboard() {
                   <Key className="w-4 h-4 text-slate-400 dark:text-zinc-500" />
                   <span>API Keys</span>
                 </a>
+              </div>
 
-                {/* Theme Toggle Button */}
+              {/* Theme Toggle Button (Both Mobile & Desktop) */}
+              <div className="p-1">
                 <button
                   onClick={toggleTheme}
                   className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800/80 transition cursor-pointer"
@@ -171,7 +173,7 @@ export default function DeveloperDashboard() {
 
               <div className="my-1 border-t border-slate-100 dark:border-zinc-800/80" />
 
-              {/* Logout Action */}
+              {/* Logout Action (Both Mobile & Desktop) */}
               <div className="p-1">
                 <button
                   onClick={() => {

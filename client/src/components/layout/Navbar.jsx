@@ -6,11 +6,13 @@ import {
   RiMenu3Line, 
   RiCloseLine, 
   RiLayoutGridLine,
-  RiKey2Line,
-  RiLogoutBoxRLine 
+  RiBookOpenLine,
+  RiCodeSSlashLine,
+  RiLogoutBoxRLine
 } from "react-icons/ri";
 import ThemeToggle from "../common/ThemeToggle";
 import { useSelector } from "react-redux";
+import { logout } from "../../features/auth/authService.js";
 
 const Navbar = () => {
   const location = useLocation();
@@ -20,6 +22,7 @@ const Navbar = () => {
   // States
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const dropdownRef = useRef(null);
 
   const links = [
@@ -53,6 +56,19 @@ const Navbar = () => {
       } else {
         navigate(link.path);
       }
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      setLoggingOut(true);
+      setIsDropdownOpen(false);
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setLoggingOut(false);
     }
   };
 
@@ -103,34 +119,45 @@ const Navbar = () => {
         {/* Right Action Buttons */}
         <div className="flex items-center gap-2">
           
-          {/* Desktop Only Actions (Theme & GitHub) */}
-          <div className="hidden sm:flex items-center gap-2">
-            <ThemeToggle />
-            <a
-              href="https://github.com/Krishan-Das/rncore"
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-2xs transition hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-            >
-              <RiGithubFill className="text-sm" />
-              <span>GitHub</span>
-            </a>
-          </div>
-
-          {/* User Auth Section (Desktop vs Mobile handling) */}
+          {/* AUTH SECTION */}
           {!user ? (
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-xs transition hover:bg-indigo-700"
-            >
-              Get Started
-            </Link>
+            <>
+              {/* Unauthenticated: Desktop Only Links */}
+              <div className="hidden md:flex items-center gap-2">
+                <ThemeToggle />
+                <a
+                  href="https://github.com/Krishan-Das/rncore"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-2xs transition hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                >
+                  <RiGithubFill className="text-sm" />
+                  <span>GitHub</span>
+                </a>
+                <Link
+                  to="/login"
+                  className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-xs transition hover:bg-indigo-700"
+                >
+                  Get Started
+                </Link>
+              </div>
+
+              {/* Unauthenticated: Mobile Hamburger Toggle */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition hover:bg-slate-100 md:hidden dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
+                aria-label="Toggle Menu"
+              >
+                {isMobileMenuOpen ? <RiCloseLine className="text-lg" /> : <RiMenu3Line className="text-lg" />}
+              </button>
+            </>
           ) : (
-            /* Logged In Desktop Profile Dropdown (Hidden on Mobile) */
-            <div className="relative hidden md:block" ref={dropdownRef}>
+            /* Authenticated: Mobile & Desktop - Avatar Dropdown */
+            <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center gap-1.5 rounded-full p-1 transition hover:bg-slate-100 dark:hover:bg-zinc-800 cursor-pointer"
+                disabled={loggingOut}
               >
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white shadow-xs">
                   {getInitial()}
@@ -142,8 +169,10 @@ const Navbar = () => {
                 />
               </button>
 
+              {/* Profile Dropdown Menu */}
               {isDropdownOpen && (
-                <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-slate-200/90 bg-white p-1.5 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="absolute right-0 z-50 mt-2 w-60 rounded-xl border border-slate-200/90 bg-white p-1.5 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+                  {/* User Info Header */}
                   <div className="border-b border-slate-100 px-3 py-2 dark:border-zinc-800">
                     <p className="truncate text-xs font-semibold text-slate-900 dark:text-white">
                       {user.name || "User"}
@@ -153,6 +182,28 @@ const Navbar = () => {
                     </p>
                   </div>
 
+                  {/* Navigation Links - Mobile-Only (md:hidden) */}
+                  <div className="py-1 border-b border-slate-100 dark:border-zinc-800 md:hidden space-y-0.5">
+                    <Link
+                      to="/#quickstart"
+                      onClick={(e) => handleNavClick(e, links[0])}
+                      className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                    >
+                      <RiBookOpenLine className="text-sm text-slate-400" />
+                      <span>Docs</span>
+                    </Link>
+
+                    <Link
+                      to="/#v1-api"
+                      onClick={(e) => handleNavClick(e, links[1])}
+                      className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                    >
+                      <RiCodeSSlashLine className="text-sm text-slate-400" />
+                      <span>API Reference</span>
+                    </Link>
+                  </div>
+
+                  {/* Common Links (Console & GitHub) */}
                   <div className="py-1">
                     <Link
                       to="/dashboard"
@@ -162,53 +213,54 @@ const Navbar = () => {
                       <RiLayoutGridLine className="text-sm text-slate-400" />
                       <span>Console Dashboard</span>
                     </Link>
+
+                    <a
+                      href="https://github.com/Krishan-Das/rncore"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                    >
+                      <RiGithubFill className="text-sm text-slate-400" />
+                      <span>GitHub Repository</span>
+                    </a>
+                  </div>
+
+                  {/* Theme Switcher Inside Dropdown */}
+                  <div className="border-t border-slate-100 px-3 py-2 flex items-center justify-between dark:border-zinc-800">
+                    <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">Theme</span>
+                    <ThemeToggle />
+                  </div>
+
+                  {/* Logout Button */}
+                  <div className="border-t border-slate-100 pt-1 dark:border-zinc-800">
+                    <button
+                      onClick={handleLogout}
+                      disabled={loggingOut}
+                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40 cursor-pointer"
+                    >
+                      <RiLogoutBoxRLine className="text-sm" />
+                      <span>{loggingOut ? "Logging out..." : "Logout"}</span>
+                    </button>
                   </div>
                 </div>
               )}
             </div>
           )}
-
-          {/* Mobile Menu Toggle Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition hover:bg-slate-100 md:hidden dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
-            aria-label="Toggle Menu"
-          >
-            {isMobileMenuOpen ? <RiCloseLine className="text-lg" /> : <RiMenu3Line className="text-lg" />}
-          </button>
         </div>
       </div>
 
-      {/* SINGLE CLEAN MOBILE DRAWER */}
-      {isMobileMenuOpen && (
+      {/* MOBILE DRAWER (Only rendered when user is NOT logged in) */}
+      {!user && isMobileMenuOpen && (
         <div className="border-b border-slate-200 bg-white/95 px-4 pb-4 pt-3 backdrop-blur-md md:hidden dark:border-zinc-800 dark:bg-zinc-950/95 space-y-3">
-          
-          {/* 1. Logged In Profile OR Logged Out Get Started */}
-          {user ? (
-            <div className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white shadow-xs">
-                {getInitial()}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold text-slate-900 dark:text-white">
-                  {user.name || "User"}
-                </p>
-                <p className="truncate text-[11px] text-slate-500 dark:text-zinc-400">
-                  {user.email}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <Link
-              to="/login"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex w-full items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs transition hover:bg-indigo-700"
-            >
-              Get Started
-            </Link>
-          )}
+          <Link
+            to="/login"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex w-full items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs transition hover:bg-indigo-700"
+          >
+            Get Started
+          </Link>
 
-          {/* 2. Navigation Links */}
+          {/* Navigation Links */}
           <nav className="flex flex-col gap-1">
             {links.map((link) => (
               <Link
@@ -222,7 +274,7 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* 3. Bottom Actions Bar (Theme & GitHub) */}
+          {/* Bottom Actions Bar */}
           <div className="flex items-center justify-between border-t border-slate-100 pt-3 dark:border-zinc-800">
             <a
               href="https://github.com/Krishan-Das/rncore"
@@ -239,7 +291,6 @@ const Navbar = () => {
               <ThemeToggle />
             </div>
           </div>
-
         </div>
       )}
     </header>
