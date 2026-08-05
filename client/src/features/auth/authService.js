@@ -15,3 +15,7 @@ export const getMe = () => {
 export const logout = () => {
   return api.post("/auth/logout");
 };
+
+export const regenerateApiKey = () => {
+  return api.patch("/auth/regenerate-api-key");
+};

@@ -13,6 +13,9 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
+import toast from "react-hot-toast";
+import { regenerateApiKey } from "../../features/auth/authService.js";
+import { setApiData } from "../../features/api/apiSlice.js"
 
 export default function DevAPIKeys({ username = 'Developer' }) {
   const dispatch = useDispatch();
@@ -71,14 +74,26 @@ void fetchData() async {
     }
   };
 
-  const handleRegenerateKey = () => {
-    if (window.confirm('Are you sure? Existing applications using this key will immediately stop working.')) {
-      setIsRegenerating(true);
-      setTimeout(() => {
-        const newKey = 'rn_live_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  const handleRegenerateKey = async () => {
+    const confirmed = window.confirm(
+      "Are you sure? Existing applications using this key will immediately stop working."
+    );
 
-        setIsRegenerating(false);
-      }, 600);
+    if (!confirmed) return;
+
+    try {
+      setIsRegenerating(true);
+
+      const { data } = await toast.promise(regenerateApiKey(), {
+        loading: "Regenerating API key...",
+        success: "API key regenerated successfully!",
+        error: (err) =>
+          err.response?.data?.message || "Failed to regenerate API key.",
+      });
+
+      dispatch(setApiData(data.api));
+    } finally {
+      setIsRegenerating(false);
     }
   };
 
@@ -210,21 +225,19 @@ void fetchData() async {
               <div className="flex items-center p-0.5 rounded-lg bg-slate-100 dark:bg-zinc-800/80 border border-slate-200/60 dark:border-zinc-700/60">
                 <button
                   onClick={() => setActiveTab('javascript')}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
-                    activeTab === 'javascript'
-                      ? 'bg-white text-blue-600 shadow-xs dark:bg-zinc-950 dark:text-blue-400'
-                      : 'text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200'
-                  }`}
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${activeTab === 'javascript'
+                    ? 'bg-white text-blue-600 shadow-xs dark:bg-zinc-950 dark:text-blue-400'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200'
+                    }`}
                 >
                   JavaScript
                 </button>
                 <button
                   onClick={() => setActiveTab('flutter')}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
-                    activeTab === 'flutter'
-                      ? 'bg-white text-blue-600 shadow-xs dark:bg-zinc-950 dark:text-blue-400'
-                      : 'text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200'
-                  }`}
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${activeTab === 'flutter'
+                    ? 'bg-white text-blue-600 shadow-xs dark:bg-zinc-950 dark:text-blue-400'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200'
+                    }`}
                 >
                   Flutter
                 </button>

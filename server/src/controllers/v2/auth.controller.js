@@ -218,6 +218,43 @@ export const logout = async (req, res) => {
 };
 
 
+// regenerate api
+// Regenerate API Key
+export const regenerateApiKey = async (req, res) => {
+  try {
+    // Generate unique API key
+    let apiKey;
+
+    do {
+      apiKey = generateApiKey();
+    } while (await V2User.exists({ apiKey }));
+
+    // Update user
+    req.user.apiKey = apiKey;
+    await req.user.save();
+
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+    return res.status(200).json({
+      success: true,
+      message: "API key regenerated successfully",
+
+      api: {
+        key: req.user.apiKey,
+        url: `${baseUrl}/api/v2/${req.user.apiKey}/todos`,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+
 // me
 export const getMe = async (req, res) => {
   try {    
