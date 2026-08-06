@@ -12,16 +12,17 @@ const app = express();
 // --- Middlewares ---
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin: config.CLIENT_URL,
-  credentials: true,
-}))
+
+// Public API
+app.use("/api/v1", cors());
+// Developer API
+app.use("/api/v2", cors());
+
 
 
 // Todo API routes
-app.use('/api/v1/todos', todoRouter);
-
 app.use("/api/v2/auth", v2AuthRoutes);
+app.use('/api/v1/todos', todoRouter);
 app.use("/api/v2", v2TodoRoutes);
 
 
