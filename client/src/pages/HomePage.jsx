@@ -34,45 +34,77 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="mx-auto max-w-7xl">
-      <div className="flex flex-col md:flex-row">
+    <>
+      <Helmet>
+        <title>
+          RNCore - Free REST API for React, Flutter & JavaScript Developers
+        </title>
 
-        {/* Left Sidebar */}
-        <DocsSidebar />
+        <meta
+          name="description"
+          content="Build frontend projects faster with free REST APIs. RNCore provides ready-to-use APIs with authentication, database storage and developer-friendly documentation."
+        />
 
-        {/* Main Content Area */}
-        <main className="flex-1 min-w-0 px-4 py-8 sm:px-6 lg:px-12 max-w-4xl">
+        <meta
+          name="keywords"
+          content="free REST API, dummy API, React API, Flutter API, frontend practice API, developer API"
+        />
 
-          <Overview />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+        <meta
+          property="og:title"
+          content="RNCore - Free REST API for Developers"
+        />
 
-          <QuickStart />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+        <meta
+          property="og:description"
+          content="Build frontend projects faster with ready-to-use REST APIs."
+        />
 
-          <ApiKeyAuth />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+        <meta
+          property="og:type"
+          content="website"
+        />
+      </Helmet>
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-col md:flex-row">
 
-          <V1PublicApi />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+          {/* Left Sidebar */}
+          <DocsSidebar />
 
-          <V2PersonalApi />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+          {/* Main Content Area */}
+          <main className="flex-1 min-w-0 px-4 py-8 sm:px-6 lg:px-12 max-w-4xl">
 
-          <ResponseFormat />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+            <Overview />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
 
-          <ErrorHandling />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+            <QuickStart />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
 
-          <ExamplesSection />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+            <ApiKeyAuth />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
 
-          <ArchitectureSection />
-          <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+            <V1PublicApi />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
 
-        </main>
+            <V2PersonalApi />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+
+            <ResponseFormat />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+
+            <ErrorHandling />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+
+            <ExamplesSection />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+
+            <ArchitectureSection />
+            <hr className="my-10 border-slate-200 dark:border-zinc-800" />
+
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
