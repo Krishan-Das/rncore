@@ -1,29 +1,35 @@
 import express from "express";
-import config from "./config/config.js";
 import cors from "cors";
-import cookieParser from "cookie-parser"
+import cookieParser from "cookie-parser";
 
 import todoRouter from "./routes/v1/todo.routes.js";
-import v2AuthRoutes from "./routes/v2/auth.routes.js"
-import v2TodoRoutes from "./routes/v2/todo.routes.js"
+import v2AuthRoutes from "./routes/v2/auth.routes.js";
+import v2TodoRoutes from "./routes/v2/todo.routes.js";
 
 const app = express();
+
 
 // --- Middlewares ---
 app.use(express.json());
 app.use(cookieParser());
 
-// Public API
+
+// --- V1 Public API ---
 app.use("/api/v1", cors());
-// Developer API
-app.use("/api/v2", cors());
 
+// --- V2 Auth API (Cookie based) ---
+app.use("/api/v2/auth", cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+  v2AuthRoutes
+);
 
+// --- V2 Developer API (API Key based) ---
+app.use("/api/v2", cors(), v2TodoRoutes );
 
-// Todo API routes
-app.use("/api/v2/auth", v2AuthRoutes);
-app.use('/api/v1/todos', todoRouter);
-app.use("/api/v2", v2TodoRoutes);
+// --- V1 Routes ---
+app.use("/api/v1/todos", todoRouter );
 
 
 export default app;
