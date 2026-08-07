@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: true,
+    },
+
     avatar: {
       type: String,
       required: true,
@@ -58,6 +64,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const userModel = mongoose.model("user", userSchema);
+const userModel = mongoose.model("v1user", userSchema);
 
 export default userModel;
