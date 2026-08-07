@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import todoRouter from "./routes/v1/todo.routes.js";
 import v2AuthRoutes from "./routes/v2/auth.routes.js";
 import v2TodoRoutes from "./routes/v2/todo.routes.js";
+import userRouter from "./routes/v1/user.routes.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api/v2", cors(), v2TodoRoutes );
 
 // --- V1 Routes ---
 app.use("/api/v1/todos", todoRouter );
+app.use("/api/v1/users", userRouter );
 
 
 export default app;
